@@ -18,7 +18,7 @@ export class NavComponent implements OnInit {
   this.authServices.login(this.model).subscribe(next => {
     alert('Inicio correcto de sesion');
   }, error => {
-    alert('Usuario o contraseña incorrecta');
+    console.log(error);
   });
 }
 loggedIn() {
