@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
+import { AlertifyService } from '../_services/alertify.service';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-nav',
@@ -7,27 +9,27 @@ import { AuthService } from '../_services/auth.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+
  model: any = {};
 
-  constructor(private authServices: AuthService) { }
+  constructor(public authService: AuthService , private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
 
   login() {
-  this.authServices.login(this.model).subscribe(next => {
-    alert('Inicio correcto de sesion');
+  this.authService.login(this.model).subscribe(next => {
+    this.alertify.success('Inicio correcto de sesion');
   }, error => {
-    console.log(error);
+    this.alertify.error(error);
   });
 }
 loggedIn() {
-  const token = localStorage.getItem('token');
-  return !!token;
+return this.authService.loggedIn();
 }
 
 logout() {
   const token = localStorage.removeItem('token');
-  console.log('Se ha cerrado sesión');
+  this.alertify.message('Se ha cerrado sesion');
 }
 }
